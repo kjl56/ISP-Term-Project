@@ -1,5 +1,3 @@
-use ISP_ys96;
-
 CREATE TABLE Users (
 Id int(11) NOT NULL AUTO_INCREMENT,
 Username varchar(50),
@@ -7,6 +5,3 @@ Password varchar(255) NOT NULL,
 Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (Id)
 )
-
-
-
