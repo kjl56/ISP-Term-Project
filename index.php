@@ -1,30 +1,52 @@
 <?php
-// Initialize the session
-session_start();
- 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
-    exit;
+
+//$con = mysqli_connect('localhost', 'root', '', 'isp_ys96');
+//$select = mysqli_select_db($con, 'isp_ys96');
+
+$con = mysqli_connect('db1.cs.uakron.edu:3306', 'ys96', 'eithei2D', 'ISP_ys96');
+$select = mysqli_select_db($con, 'ISP_ys96');
+
+
+if(isset($_POST['submit']))
+{
+	$name = $_FILES['file']['name'];
+	$temp = $_FILES['file']['tmp_name'];
+	
+	move_uploaded_file($temp,"uploaded/".$name);
+	$des=$_POST['des'];
+	$url = "http://localhost/PHP1/uploaded/$name";
+	$query = mysqli_query($con, "INSERT INTO `videosname` (`name`,`url`,`des`)VALUE ('$name','$url','$des')");
 }
+
 ?>
- 
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+<meta charset="utf-8">
+<title>Video Upload page</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; text-align: center; }
+        body{ font: 14px sans-serif; }
     </style>
 </head>
+
 <body>
-    <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
-    </div>
-    <p>
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
+
+<a href="videos.php">Videos</a>
+<form action="index.php" method="POST" enctype="multipart/form-data">
+	<input type="file" name="file" accept="video/*"/>
+	<input type="text" placeholder="Description:" name="des">
+    <input type="submit" name="submit" value="Upload!" />
+</form>
+
+<?php
+
+if(isset($_POST['submit']))
+{
+	echo "<br />".$name." has been uploaded";
+}
+
+?>
+
 </body>
 </html>
